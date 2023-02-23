@@ -1,8 +1,4 @@
-body {
-  margin: 0;
-  font-family: "Courier New", Courier, monospace;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.back {
   background-image: linear-gradient(
     45deg,
     hsl(240deg 100% 20%) 0%,
@@ -16,11 +12,4 @@ body {
     hsl(45deg 100% 50%) 89%,
     hsl(55deg 100% 50%) 100%
   );
-  background-repeat: no-repeat;
-  height: 44.6rem;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
 }

@@ -17,7 +17,7 @@ body {
     hsl(55deg 100% 50%) 100%
   );
   background-repeat: no-repeat;
-  height: 44.6rem;
+  background-attachment: fixed;
 }
 
 code {

@@ -21,7 +21,26 @@ class App extends Component {
       box: {},
       route: 'signin',
       isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: '',
+        joined: '',
+      }
     }
+  }
+
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined
+      }
+    })
   }
 
   componentDidMount() {
@@ -94,7 +113,23 @@ class App extends Component {
 
     fetch(`https://api.clarifai.com/v2/models/${Model_ID}/outputs`, requestOptions)
       .then(response => response.text())
-      .then(result => this.displayFaceBox(this.calculateFaceLocation(result)))
+      .then(
+        result => {
+          if (result) {
+            fetch('http://localhost:3010/image', {
+              method: 'put',
+              headers: { 'Content-type': 'application/json' },
+              body: JSON.stringify({
+                id: this.state.user.id,
+              })
+            }).then(Response => Response.json())
+              .then(count => {
+                this.setState(Object.assign(this.state.user, { entries: count }))
+              })
+          }
+          this.displayFaceBox(this.calculateFaceLocation(result))
+        }
+      )
       .catch(error => console.log('error', error));
   }
 
@@ -102,20 +137,20 @@ class App extends Component {
     return (
       <div className="App" >
         <Navigation isSignedIn={this.state.isSignedIn} onRouteChange={this.onRouteChange} />
-        {this.state.route === 'signin' ? <SignIn onRouteChange={this.onRouteChange} />
+        {this.state.route === 'signin' ? <SignIn onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
           :
           (
             this.state.route === 'home' ?
               <div>
                 <Logo />
-                <Rank />
+                <Rank user={this.state.user} />
                 <ImageLinkForm
                   searchChange={this.onInputChange}
                   onBtnClick={this.onButtonClick}
                 />
                 <FaceRecoginition box={this.state.box} imageURL={this.state.imageURL} />
               </div>
-              : <Register onRouteChange={this.onRouteChange} />
+              : <Register loadUser={this.loadUser} onRouteChange={this.onRouteChange} />
           )
         }
       </div>

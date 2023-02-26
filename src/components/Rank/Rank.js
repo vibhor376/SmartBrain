@@ -1,6 +1,6 @@
 import React from "react";
 import ParticlesBg from 'particles-bg';
-const Rank = () => {
+const Rank = ({ user }) => {
     return (
         <>
             <ParticlesBg type="cobweb" bg={{
@@ -11,10 +11,10 @@ const Rank = () => {
             }} />
             <div>
                 <div className="white f4">
-                    {"Vibhor your current rank is.."}
+                    {`${user.name} your current rank is..`}
                 </div>
                 <div className="white f2">
-                    {"#4"}
+                    {`${user.entries}`}
                 </div>
             </div>
         </>
